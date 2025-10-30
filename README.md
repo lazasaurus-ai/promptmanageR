@@ -112,6 +112,14 @@ Use `pull_prompt_langsmith()` to download a prompt by its LangSmith path (e.g., 
 library(promptmanageR)
 
 prompt <- pull_prompt_langsmith("rlm/rag-prompt")
+
+# OR LIKE THIS
+# prompt <- pull_prompt_langsmith("rlm/rag-prompt",
+#  api_key = Sys.getenv("LANGSMITH_API_KEY")
+#  )
+
+api_key = Sys.getenv("LANGSMITH_API_KEY")
+
 preview_prompt(prompt)
 ```
 And it will look like this 
