@@ -1,18 +1,18 @@
-# promptmanageR 🧠📜
-> Lightweight prompt management for R + LLM clients (like [ellmer](https://github.com/mdrcdata/ellmer))
+# promptmanageR 
 
-`promptmanageR` provides a simple framework for managing and rendering **system and user prompts** for AI/LLM workflows in R.  
+`promptmanageR` provides a simple framework for managing and rendering system and user prompts for AI/LLM workflows in R.
+
 It helps you separate prompt logic from code — load templates from JSON files, substitute variables, and preview them interactively.
 
----
+## What promptmanageR Does
 
-## ✨ Features
-- 📂 Load prompts from JSON files  
-- 🧩 Render templates with variable substitution (`{{var}}`)  
-- 👁️ Preview prompts nicely in the console  
-- 🧰 Create a starter prompt file via `use_prompt_file()`  
-- 🌍 Load a built-in library of universal and agent prompts  
-- 🔗 Integrates seamlessly with `ellmer::chat_aws_bedrock()` and other LLM clients  
+`promptmanageR` does three main things:
+
+1. **Manage and store prompts** — Organize your system and user prompts in a structured JSON file, and easily return them in an ellmer::chat_anthropic() or similar LLM call.
+
+2. **Preview prompts interactively** — Quickly visualize and review the exact prompt text being sent to an LLM before execution.
+
+3. **Pull community prompts from LangSmith Hub** — Use your `LANGSMITH_API_KEY` to download and use shared or public prompt templates directly from the [LangSmith Hub](https://smith.langchain.com/hub)
 
 ---
 
@@ -27,67 +27,31 @@ remotes::install_github("lazasaurus-ai/promptmanageR")
 
 ## 🚀 Quick Start
 
+### 1. Load prompts from a local JSON file
+
 ```r
 library(promptmanageR)
+
+# Load prompts from a local JSON file
+prompts <- load_prompts("./prompts.json")
+
+# Access a specific prompt
+prompts$system_instructions1
+#[1] "You are an R assistant that writes clear, reproducible code."
+```
+
+
+### 2. Combine with Ellmer 
+
+```r
 library(ellmer)
-```
 
-### 1️⃣ Create a prompt file interactively
-
-Use the helper to scaffold a JSON file with example prompts in your current working directory:
-
-```r
-use_prompt_file()
-```
-
-This creates and opens a file called `prompts.json`:
-
-```json
-{
-  "system_instructions1": "You are a helpful R assistant.",
-  "user_template1": "Summarize the dataset {{dataset_name}}."
-}
-```
-
----
-
-### 2️⃣ Load and render prompts
-
-```r
-prompts <- load_prompts("prompts.json")
-
-# Replace variables in template
-rendered <- render_prompt(prompts$user_template1, list(dataset_name = "iris"))
-
-cat(rendered)
-#> Summarize the dataset iris.
-```
-
----
-
-### 3️⃣ Preview prompts in color
-
-```r
-preview_prompt("user_template1", list(dataset_name = "mtcars"))
-```
-
-Output:
-```
-📄 Rendered Prompt:
-----------------------------------------
-Summarize the dataset mtcars
-----------------------------------------
-```
-
----
-
-### 4️⃣ Use with an LLM client
-
-```r
-chat <- ellmer::chat_aws_bedrock(
+# Initialize a Bedrock chat session
+chat <- chat_aws_bedrock(
   model = "anthropic.claude-3-5-sonnet-20240620-v1:0"
 )
 
+# Run a chat using a system prompt and a templated user prompt
 response <- chat$chat(
   prompts$system_instructions1,
   render_prompt(prompts$user_template1, list(dataset_name = "iris"))
@@ -95,8 +59,94 @@ response <- chat$chat(
 
 cat(response)
 ```
+### 3. Using Prompt File Setup Helper
 
----
+You can quickly link your prompt file to your R environment using:
+
+```r
+use_prompt_file(scope = "project")
+```
+This function automatically:
+
+* Creates (or reuses) a prompts.json file in your current project
+* Adds the following line to your .Rprofile:
+
+```r
+Sys.setenv(PROMPT_PATH = "path/to/prompts.json")
+```
+* Ensures that promptmanageR automatically loads your prompts at startup
+
+Typical output:
+
+```
+> use_prompt_file(scope = "project")
+✔ Setting active project to "/home/username/R/promptmanageR".
+ℹ File already exists at /home/username/R/promptmanageR/prompts.json
+✔ Added PROMPT_PATH to .Rprofile
+```
+
+## Langsmith Support
+
+**promptmanageR** can connect directly to the LangSmith Hub to download and reuse community or team-managed prompts.
+
+This allows you to pull curated prompt templates shared by the community or within your organization — all without leaving R.
+
+### 1. Set your API key
+
+Before using LangSmith features, set your API key in your environment.
+You can do this temporarily in your R session:
+```r
+Sys.setenv(LANGSMITH_API_KEY = "your_api_key_here")
+```
+Or permanently in your `~/.Renviron` file:
+
+```r
+LANGSMITH_API_KEY="your_api_key_here"
+```
+
+### 2. Pull a prompt from LangSmith Hub
+
+Use `pull_prompt_langsmith()` to download a prompt by its LangSmith path (e.g., `username/prompt-name`):
+
+```r
+library(promptmanageR)
+
+prompt <- pull_prompt_langsmith("rlm/rag-prompt")
+preview_prompt(prompt)
+```
+And it will look like this 
+
+```r
+✔ Using prompts from current R environment.
+
+📄 Rendered Prompt:
+----------------------------------------
+You are an assistant for question-answering tasks. Use the following pieces of retrieved context to answer the question. If you don't know the answer, just say that you don't know. Use three sentences maximum and keep the answer concise.
+Question: {question} 
+Context: {context} 
+Answer: 
+----------------------------------------
+
+```
+
+### 3. Example Workflow 
+
+You can mix local and LangSmith prompts seamlessly:
+
+```r
+prompts <- load_prompts("inst/prompts.json")
+
+# Use local system prompt, but remote user prompt
+system_prompt <- prompts$system_instructions
+user_prompt   <- pull_prompt_langsmith("rlm/rag-summary")
+
+chat <- ellmer::chat_anthropic(
+  system_prompt = system_prompt,
+  user_prompt   = user_prompt
+)
+
+
+```
 
 ## 🌍 Universal Prompts Library
 
