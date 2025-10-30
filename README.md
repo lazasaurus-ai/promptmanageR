@@ -206,14 +206,16 @@ names(universal)[1:10]
 Example:
 
 ```r
-preview_prompt("developer_mlops")
+preview_prompt(universal$developer_mlops)
 ```
 
 Output:
 
-```
-📘 developer_mlops
+```r
+✔ Using prompts from current R environment.
+
+📄 Rendered Prompt:
 ----------------------------------------
-You are a machine learning operations (MLOps) engineer. Design robust CI/CD workflows...
+You are a machine learning operations (MLOps) engineer. Design robust CI/CD workflows for training and deploying ML models using AWS, GitHub Actions, or SageMaker. Emphasize versioning, reproducibility, and monitoring best practices. 
 ----------------------------------------
 ```
