@@ -1,0 +1,4 @@
+Name: Preview Universal Prompt
+Description: Choose and preview a system or assistant prompt.
+Binding: preview_universal_prompt
+Interactive: true

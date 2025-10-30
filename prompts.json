@@ -1,0 +1,6 @@
+{
+  "system_instructions1": "You are an R assistant that writes clear, reproducible code.",
+  "system_instructions2": "You are a code reviewer focusing on efficiency and style.",
+  "user_template1": "Summarize the following dataset: {{dataset_name}}",
+  "user_template2": "Translate this text into Spanish: {{text}}"
+}

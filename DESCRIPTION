@@ -1,0 +1,25 @@
+Package: promptmanageR
+Type: Package
+Title: Manage and Reuse Prompts for LLM and AI Clients in R
+Version: 0.1.0
+Authors@R: 
+  c(person("Lazaro", "Alvarez", email = "lazarusalvarez3@gmail.com", role = c("aut", "cre")))
+Description: A lightweight R package for managing reusable system and user prompts 
+  stored in JSON files. Provides utilities for creating, loading, and 
+  rendering prompt templates that can be easily integrated into ellmer, Shiny, 
+  or other programmatic workflows. Includes helper functions to bootstrap and 
+  register prompt files in .Rprofile for automatic discovery.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Imports:
+  jsonlite,
+  yaml,
+  glue,
+  usethis,
+  rstudioapi,
+  utils,
+  tools,
+  cli
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.2
