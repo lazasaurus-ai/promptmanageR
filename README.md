@@ -8,7 +8,7 @@ It helps you separate prompt logic from code — load templates from JSON files,
 
 `promptmanageR` does three main things:
 
-1. **Manage and store prompts** — Organize your system and user prompts in a structured JSON file, and easily return them in an ellmer::chat_anthropic() or similar LLM call.
+1. **Manage and store prompts** — Organize your system and user prompts in a structured JSON file, and easily return them in an `ellmer::chat_anthropic()` or similar LLM call.
 
 2. **Preview prompts interactively** — Quickly visualize and review the exact prompt text being sent to an LLM before execution.
 
