@@ -119,7 +119,8 @@ Typical output:
 ✔ Added PROMPT_PATH to .Rprofile
 ```
 
-## LangSmith Support <img src="https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/langsmith-color.png" align="right" height="28"/>
+## LangSmith Support <img src="https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/langsmith-color.png" align="right" height="138"/>
+
 
 
 **promptmanageR** can connect directly to the LangSmith Hub to download and reuse community or team-managed prompts.
