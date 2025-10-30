@@ -59,7 +59,41 @@ response <- chat$chat(
 
 cat(response)
 ```
-### 3. Using Prompt File Setup Helper
+
+### 3. Prompt Preview 
+
+You can preview any prompt template before sending it to an LLM.
+This is especially useful when your prompt contains placeholders (e.g., `{{model}}`, `{{dataset}}`) that you want to substitute dynamically.
+
+```r
+library(promptmanageR)
+
+template <- "Compare {{model1}} and {{model2}} on {{dataset}}."
+
+preview_prompt(
+  template,
+  list(
+    model1 = "random forest",
+    model2 = "xgboost",
+    dataset = "iris"
+  )
+)
+```
+
+Output
+
+```r
+✔ Using prompts from current R environment.
+
+📄 Rendered Prompt:
+----------------------------------------
+Compare random forest and xgboost on iris. 
+----------------------------------------
+```
+This shows you exactly what the final prompt will look like when passed to an ellmer call— helping you debug or iterate quickly on your prompt design.
+
+
+### 4. Using Prompt File Setup Helper
 
 You can quickly link your prompt file to your R environment using:
 
@@ -85,7 +119,7 @@ Typical output:
 ✔ Added PROMPT_PATH to .Rprofile
 ```
 
-## Langsmith Support
+## Langsmith Support [<img src="img/image.png" alt="documentoR hex logo" align="right" height="138"/></a>](https://registry.npmmirror.com/@lobehub/icons-static-png/latest/files/dark/langsmith-color.png)
 
 **promptmanageR** can connect directly to the LangSmith Hub to download and reuse community or team-managed prompts.
 
