@@ -1,4 +1,4 @@
-# promptmanageR 
+# promptmanageR  <img src="img/promptmanageR-hex.png" alt="promptmanageR hex logo" align="right" height="138"/></a>
 
 `promptmanageR` provides a simple framework for managing and rendering system and user prompts for AI/LLM workflows in R.
 
